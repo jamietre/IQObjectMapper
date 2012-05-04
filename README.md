@@ -249,4 +249,53 @@ These determine which properties are exposed to any client.
     UpdateSource = true;                // when using dictionary or dynamic adapters, changes to the data should update the underlying object.
     IsReadOnly = false;                 // when true, no changes are permitted via the adapter.
 
-   
+#### Performance
+
+I've used just about every trick in the book to make this as fast as possible. The slowest methods are the dynamic and dictionary adapters. In a very simple test scenario (see "Perform" in the unit tests) these are approximately 14 times slower than raw access.
+
+That sounds terrible, but remember that it's 14 times slower than pretty much instantaneous. On my laptop, I can read and write two properties (one string, one double) a thousand times in 2 milliseconds.  That's a million complete read + write operations in a second, and that includes overhead of creating unique test values in each loop iteration. 
+
+At the same time, using the easily accessible delegates for reading and writing that are created by this library, you can expect performance that is extremely fast - between 1.5 and 2x native access. it's easy to do this too, see "If you need to optimize performance..." above under "Lower Level Access."
+
+Here are simple figures comparing different types of access. Each tests performs two reads, two writes, and a little bit of math to ensure different values are used.
+
+#### Sample performance data
+
+Each test shows time in milliseconds for 1000 iterations doing two reads, two writes, and a simple calculation to build a unique string & double in each itereation.
+
+Test 1: no optimizing (looking up the delegate from the class type in each loop iteration) versus native property access
+
+    Time 1: 2.153, Time 2: 0.167, Ratio: 12.8922155688623
+
+Test 2: ClassInfo not looked up, but delegates looked up at each loop iteraation (simulates use where property name may be unique for each iteration) vs. native
+
+    Time 1: 0.307, Time 2: 0.172, Ratio: 1.78488372093023
+
+Test 3: Delegates cached outside loop - call is made directly to the property delegate vs. native
+
+	Time 1: 0.238, Time 2: 0.169, Ratio: 1.40828402366864
+
+Test 4: Same as test 3, but with fields instead of properties being tested
+
+    Time 1: 0.296, Time 2: 0.154, Ratio: 1.92207792207792
+
+Test 5: Dictionary property read/write access vs. native
+
+    Time 1: 2.113, Time 2: 0.152, Ratio: 13.9013157894737
+
+Test 6: Dictionary property read/write vs. native Dictionary<string,object>
+
+    Time 1: 2.107, Time 2: 0.385, Ratio: 5.47272727272727
+
+Test 7: Native dynamic object vs. native (for reference)
+
+	Time 1: 0.373, Time 2: 0.172, Ratio: 2.16860465116279
+
+Test 8: DynamicAdapter vs. native
+    
+     Time 1: 2.43, Time 2: 0.172, Ratio: 14.1279069767442
+
+Test 9: DynamicAdapter vs. native dynamic object
+
+     Time 1: 2.434, Time 2: 0.355, Ratio: 6.85633802816901
+
