@@ -31,8 +31,7 @@ If you use Javascript, you are familiar with the concept of "objects as collecti
     minValueNames=[];
 
     foreach (var propName in options) { 
-        if (propName.length > 3 && 
-            propName.substring(0,3)=='min') {
+        if (propName.length > 3 && propName.substring(0,3)=='min') {
             minValueName.push(propName.substring(3));
             options[propName]+=1;  // add one to the minimum value
         }
