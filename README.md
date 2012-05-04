@@ -164,18 +164,37 @@ The data structure `IEnumerable<KeyValuePair<string,object>>` is what I mean whe
 
 **Map an object to another instance.**
 
-    T Map(T source, Func<IDelegateInfo,object,object>) 
+    T Map(T source, Func<object,IDelegateInfo,object>) 
 
 The IDelegateInfo interface exposes reflection iformation about
 each field such as `Name`, `Type`, `IsPrivate`, ... which can be used to assist in a mapping operation. The function delegate for the 2nd parameter should look like this:
     
-    object NewValue(IDelegateInfo delInfo, object source)
+    object NewValue(object source,IDelegateInfo delInfo)
     {
          ... 
          return newValue;
     }
 
-For each property of the object, the function is passed in the original value, and you should return the new value. The final object is composed from the values returned by this function.
+For each property of the object, the function is passed in the original value, and you should return the new value. The final object is composed from the values returned by this function. An example might be:
+
+    class Animal {
+        public string Name;
+        public bool Type;
+        public bool HasClaws;
+        public string Name;
+    }
+
+    Animal dog = GetADog();
+    var asCat = ObjectMapper.Map(dog, (value,del) => {
+        switch(del.Name) {
+            case "HasClaws": 
+                return false;
+            case "Type":
+                return "cat";
+            default:
+                return value;
+        }
+    });
 
 
 **Create a new dynamic object given a concrete class instance or a dictionary-like object**
