@@ -287,11 +287,17 @@ These determine which properties are exposed to any client.
 
 #### Performance
 
-I've used just about every trick in the book to make this as fast as possible. The slowest methods are the dynamic and dictionary adapters. In a very simple test scenario (see "Perform" in the unit tests) these are approximately 14 times slower than raw access.
+I've used just about every trick in the book to make this as fast as possible. Take a look at `Impl/ClassInfoBuilder.cs` to see how delegates are constructed and `Impl/MapCache.cs` to see how access to the reflection data is cached. Much love to:
 
-That sounds terrible, but remember that it's 14 times slower than pretty much instantaneous. On my laptop, I can read and write two properties (one string, one double) a thousand times in 2 milliseconds.  That's a million complete read + write operations in a second, and that includes overhead of creating unique test values in each loop iteration. 
+ * Jon Skeet for [Making Reflection Fly](https://msmvps.com/blogs/jon_skeet/archive/2008/08/09/making-reflection-fly-and-exploring-delegates.aspx "Making Reflection Fly") - I used a variant of his method to create strongly-typed delegates.
 
-At the same time, using the easily accessible delegates for reading and writing that are created by this library, you can expect performance that is extremely fast - between 1.5 and 2x native access. it's easy to do this too, see "If you need to optimize performance..." above under "Lower Level Access."
+ * Stephen Erisman for [Fast Dynamic Property/Field Accessors](http://www.codeproject.com/Articles/14560/Fast-Dynamic-Property-Field-Accessors "Fasy Dynamic Property/Field Accessors"). Though this article was written some years ago, the technique for emitting opcodes to improve performance for field access is still relevant, since there's no way to create a strongly-typed delegate to a field.
+
+When using the simplest structures in IQObjectMapper, read/write actions are about 1.4-1.8x slower than native access, which is pretty darn fast. The slowest methods are the dynamic and dictionary adapters. In a very simple test scenario (see "Perform" in the unit tests) these are approximately 14 times slower than raw access.
+
+That sounds terrible, but remember that it's 14 times slower than pretty much instantaneous. On my laptop, I can read and write two properties (one string, one double) a thousand times in 2 milliseconds.  That's a million complete read + write operations in a second, and that includes overhead of creating unique test values in each loop iteration. So, this performance should present no issues except inside huge loops. (Creation time for the adapters will also add something too. Choose your tool wisely - if iteration a million times, you may not want to create a new dictionary adapter for each iteration!)
+
+At the same time, using the easily accessible delegates for reading and writing that are created by this library, you can expect performance at that optimum level of 1.4-1.8x. it's easy to do this too, see "If you need to optimize performance..." above under "Lower Level Access."
 
 Here are simple figures comparing different types of access. Each tests performs two reads, two writes, and a little bit of math to ensure different values are used.
 
