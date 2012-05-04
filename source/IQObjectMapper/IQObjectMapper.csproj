@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5B432DEE-CA44-4AF2-864C-FAA7A142BF23}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>IQObjectMapper</RootNamespace>
+    <AssemblyName>IQObjectMapper</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Adapters\DynamicAdapter.cs" />
+    <Compile Include="IMapOptions.cs" />
+    <Compile Include="IDictionaryOptions.cs" />
+    <Compile Include="IClassInfoData.cs" />
+    <Compile Include="IDelegateInfo.cs" />
+    <Compile Include="IGlobalOptions.cs" />
+    <Compile Include="Impl\ClassInfoBuilder.cs" />
+    <Compile Include="Impl\ClassInfoData.cs" />
+    <Compile Include="Impl\Object2Object.cs" />
+    <Compile Include="Impl\ReflectionOptions.cs" />
+    <Compile Include="Impl\DelegateInfo.cs" />
+    <Compile Include="Impl\DelegateInfoT.cs" />
+    <Compile Include="Adapters\DelegateAdapter.cs" />
+    <Compile Include="Adapters\PropertyKVPAdapter.cs" />
+    <Compile Include="Adapters\PropertyDictionaryAdapter.cs" />
+    <Compile Include="Adapters\DataReaderDictionary.cs" />
+    <Compile Include="Adapters\DataReaderAdapterT.cs" />
+    <Compile Include="Adapters\DataReaderAdapter.cs" />
+    <Compile Include="Adapters\DataReaderEnumerator.cs" />
+    <Compile Include="Adapters\DataRecordAdapter.cs" />
+    <Compile Include="Adapters\DataRecordEnumerator.cs" />
+    <Compile Include="Adapters\TypedEnumerator.cs" />
+    <Compile Include="IClassInfo.cs" />
+    <Compile Include="IReflectionOptions.cs" />
+    <Compile Include="Impl\ClassInfo.cs" />
+    <Compile Include="Adapters\TypedAdapter.cs" />
+    <Compile Include="MapOptions.cs" />
+    <Compile Include="Impl\Dict2Poco.cs" />
+    <Compile Include="Impl\MapperCache.cs" />
+    <Compile Include="Impl\Poco2Dict.cs" />
+    <Compile Include="Undefined.cs" />
+    <Compile Include="ObjectMapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
