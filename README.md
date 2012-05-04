@@ -54,7 +54,7 @@ Using IQObjectMapper, our Javascript example above becomes:
             prop.Substring(0,3)=="min") {
                 minValues.Add(prop.Substring(3));
             }
-            dict[prop]=0;
+            dict[prop]=((int)dict[prop])+1;
         }
     }
 
