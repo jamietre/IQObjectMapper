@@ -39,7 +39,7 @@ If you use Javascript, you are familiar with the concept of "objects as collecti
 
 In C#, we don't do things like this because it's hard. We generally use other data structures like dictionaries and lists. But there are many times when you want the benefits and security of a strongly-typed object for some situations, but the flexibility to handle the same object using another more flexible data structure in others. And it's not a coincidence that I bring Javascript into this. One of the more common "other" reasons why you might want to do this is to simplify passing data back and forth to Javascript. It's common for Javascript libraries to accept and return objects with dynamic structures. It can be difficult to facilitate this data exchange using strongly typed objects in C#. 
 
-Many are used to dealing with by using dynamic types, but then the advantage of strong typing is lost. Alternatively, you may end up writing lots of code to map less-structured data from a Javascript client to C# strongly-type structures and vice versa. 
+A lot of programmers deal with this by using dynamic types, but then the advantage of strong typing is lost. Alternatively, you may end up writing lots of code to map less-structured data from a Javascript client to C# strongly-type structures and vice versa. 
 
 Beyon that, there are plenty of other situations where an easy mapping from basic data types to strongly typed object would simplify code. The goal of this project is to provide tools to perform this common, yet difficult task using standardized interfaces and objects that are familiar to most C# programmers. 
 
@@ -49,8 +49,7 @@ Using IQObjectMapper, our Javascript example above becomes:
     var dict = ObjectMapper.AsDictionary(myObject);
 
     foreach (var prop in dict) {
-        if (prop.Length>3 && 
-            prop.Substring(0,3)=="min") {
+        if (prop.Length>3 && prop.Substring(0,3)=="min") {
                 minValues.Add(prop.Substring(3));
             }
             dict[prop]=((int)dict[prop])+1;
