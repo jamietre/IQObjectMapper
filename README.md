@@ -40,21 +40,21 @@ If you use Javascript, you are familiar with the concept of "objects as collecti
 
 In C#, we don't do things like this because it's hard. We generally use other data structures like dictionaries and lists. But there are many times when you want the benefits and security of a strongly-typed object for some situations, but the flexibility to handle the same object using another more flexible data structure in others. And it's not a coincidence that I bring Javascript into this. One of the more common "other" reasons why you might want to do this is to simplify passing data back and forth to Javascript. It's common for Javascript libraries to accept and return objects with dynamic structures. It can be difficult to facilitate this data exchange using strongly typed objects in C#. 
 
-Many are used to dealing with this by using dynamic types, but then the advantage of strong typing is lost. Alternatively, you may end up writing lots of code to map less-structured data from a Javascript client to C# strongly-type structures and vice versa. 
+Many are used to dealing with by using dynamic types, but then the advantage of strong typing is lost. Alternatively, you may end up writing lots of code to map less-structured data from a Javascript client to C# strongly-type structures and vice versa. 
 
-Beyond that, there are plenty of other situations where an easy mapping from basic data types to strongly typed object would simplify code. The goal of this project is to provide tools to perform this common, yet difficult task using standardized interfaces and objects that are familiar to most C# programmers. 
+Beyon that, there are plenty of other situations where an easy mapping from basic data types to strongly typed object would simplify code. The goal of this project is to provide tools to perform this common, yet difficult task using standardized interfaces and objects that are familiar to most C# programmers. 
 
 Using IQObjectMapper, our Javascript example above becomes:
 
     var minValues = new List<string>();
     var dict = ObjectMapper.AsDictionary(myObject);
 
-    foreach (var prop in dict.Keys) {
-        if (prop.Length>3 && 
-            prop.Substring(0,3)=="min") {
-                minValues.Add(prop.Substring(3));
+    foreach (var prop in dict) {
+        if (prop.Key.Length>3 && 
+            prop.Key.Substring(0,3)=="min") {
+                minValues.Add(prop.Key.Substring(3));
             }
-            dict[prop]=((int)dict[prop])+1;
+            dict[prop.Key]=0;
         }
     }
 
@@ -210,3 +210,43 @@ Methods for mapping DataReaders to useful formats.
 	IEnumerable<IDictionary<string, object>> ToDictionarySequence(IDataReader reader)
     IDictionary<string, object> ToDictionary(IDataRecord reader)
 
+#### Options ####
+
+Options can be set globally using the `ObjectMapper.DefaultOptions` object. Different options can be passed to most objects and methods to override the globally-defined behavior.
+
+When you create a new instance of the `MapperOptions` object, it will inherit the global settings automatically. So it's easy to override the settings for any option by 
+creating a new instance of `MapperOptions` and changing it:
+
+    // map someInstance to a dictionary, but exclude fields (e.g. only include properties)
+
+    var myDict = ObjectMapper.AsDictionary(someInstance, new MapOptions {
+	    IncludeFields: false;
+	});
+
+The following options are available. Not all options apply to every method.  The default value is shown with each.
+
+##### Reflection options:
+
+These determine which properties are exposed to any client.
+
+    IncludeProperties = true            // property type members are included
+    IncludeFields = true                // field type members are included
+    IncludePrivate = false;             // entities protected or private getters are not exposed
+    DeclaredOnly = false;               // properties/fields defined in an ancestor are not exposed
+    CaseSensitive = false;              // access via most methods is not case sensitive. Be sure you don't have conflicting entities.
+    
+##### Other options
+	
+	DynamicObjectType =                 // the type of dynamic object created by methods that return a new dynamic object.
+	    typeof(IQDynamicObject);        // Some access control options will only work if you use this type.
+    FailOnMismatchedTypes = true;       // when attempting to map data to an incompatible type, throw an error (true) or fail silently
+    CanAlterProperties = true;          // For dictionary access to a concrete object, items can be added and removed
+    CanAccessMissingProperties = true;  // For dictionary or dynamic access, reading a missing property will return UndefinedValue
+    UndefinedValue = Undefined.Value;   // The value returned when accessing a missing property
+    
+	ParseValues = false;                // When assigning data to an incompatible type, attempt to parse or coerce it. Does stuff like
+	                                    // converts "true" to (bool)true.
+    UpdateSource = true;                // when using dictionary or dynamic adapters, changes to the data should update the underlying object.
+    IsReadOnly = false;                 // when true, no changes are permitted via the adapter.
+
+   
