@@ -162,31 +162,47 @@ The data structure `IEnumerable<KeyValuePair<string,object>>` is what I mean whe
 
 ##### Methods that return a new object #####
 
-Returns a dynamic (expando) object given a concrete class instance or a dictionary-like object
+**Map an object to another instance.**
+
+    T Map(T source, Func<IDelegateInfo,object,object>) 
+
+The IDelegateInfo interface exposes reflection iformation about
+each field such as `Name`, `Type`, `IsPrivate`, ... which can be used to assist in a mapping operation. The function delegate for the 2nd parameter should look like this:
+    
+    object NewValue(IDelegateInfo delInfo, object source)
+    {
+         ... 
+         return newValue;
+    }
+
+For each property of the object, the function is passed in the original value, and you should return the new value. The final object is composed from the values returned by this function.
+
+
+**Create a new dynamic object given a concrete class instance or a dictionary-like object**
 
     dynamic ToDynamic(object source);
 
-Return a new dynamic object of type T given a concrete class instance or a dictionary-like object
+**Create a new dynamic object of type T given a concrete class instance or a dictionary-like object**
 
 	T ToDynamic<T>(object source, bool deep = false) where T : IDynamicMetaObjectProvider
 
-Return a new dictionary populated from the properties of the concrete object
+**Create a new dictionary populated from the properties of the concrete object**
 
 	IDictionary<string, object> ToDictionary(object source, bool deep = false)
 
-Return a new concrete object of a specific type based on the values of the dictionary-like source
+**Create a new concrete object of a specific type based on the values of the dictionary-like source**
 
     object ToNew(IEnumerable<KeyValuePair<string, object>> source, Type type)
     T ToNew<T>(IEnumerable<KeyValuePair<string, object>> source)
 
-Given a sequence of dictionary-like objects, return a sequence of strongly-typed instances
+**Given a sequence of dictionary-like objects, create a sequence of strongly-typed instances**
 
     IEnumerable<T> ToTypedSequence<T>(IEnumerable<IEnumerable<KeyValuePair<string,object>>> source)
 
 
 ##### Methods that update existing objects #####
 
-Populate an existing concrete obejct from the dictionary-like source
+**Populate an existing concrete obejct from the dictionary-like source**
 
 	void ToExisting(IEnumerable<KeyValuePair<string, object>> source, object target)
 	void ToExisting<T>(IEnumerable<KeyValuePair<string, object>> source, T target)
@@ -199,13 +215,14 @@ Populate an existing concrete obejct from the dictionary-like source
 	
 ##### Other Methods #####
 
-Parse value-like data into a value type. Value-like data is a value type, a string that can be parsed
-into a value type, or an array or list.
+**Parse value-like data into a value type. **
+
+Value-like data is a value type, a string that can be parsed into a value type, or an array or list. Some reference types are value-like, e.g. strings and arrays.
 
 	T ParseValue<T>(object source) 
 	object ParseValue(object source, Type type)
 
-Methods for mapping DataReaders to useful formats.
+**Methods for mapping DataReaders to useful formats.**
 
 	IEnumerable<IDictionary<string, object>> ToDictionarySequence(IDataReader reader)
     IDictionary<string, object> ToDictionary(IDataRecord reader)

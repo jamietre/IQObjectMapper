@@ -106,7 +106,23 @@ namespace IQObjectMapper.Tests
             string json = ser.Serialize(ObjectMapper.ToNew<MyObject>(dict));
 
             Assert.AreEqual("{\"name\":null,\"age\":88,\"children\":null}", json);
+
+
+            // another way
+
+            var parsed = ObjectMapper.Map(obj,(del,value) => {
+                if (value !=null && value.GetType().IsClass) {
+                    return null;
+                } else {
+                    return value;
+                }
+            });
+
+            json = ser.Serialize(ObjectMapper.ToNew<MyObject>(dict));
+            Assert.AreEqual("{\"name\":null,\"age\":88,\"children\":null}", json);
+
         }
+
      
     }
 }

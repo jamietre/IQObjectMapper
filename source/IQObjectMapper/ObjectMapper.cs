@@ -147,6 +147,19 @@ namespace IQObjectMapper
 
         }
 
+        public static T Map<T>(T source, Func<IDelegateInfo,object,object> mapFunc, IMapOptions options=null) where T: class, new()
+        {
+            var opts =MapOptions.From(options);
+            IDictionary<string,object> dict = new Dictionary<string,object>(ObjectMapper.MapperCache.GetStringComparer(opts));
+            var delegates = new Adapters.DelegateAdapter(typeof(T),opts);
+
+            foreach (var del in delegates)
+            {
+                dict[del.Name] = mapFunc(del, del.GetValue(source));
+            }
+            return ObjectMapper.ToNew<T>(dict);
+        }
+
         #endregion
 
         #region public adapter methds
