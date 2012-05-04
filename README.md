@@ -50,11 +50,11 @@ Using IQObjectMapper, our Javascript example above becomes:
     var dict = ObjectMapper.AsDictionary(myObject);
 
     foreach (var prop in dict) {
-        if (prop.Key.Length>3 && 
-            prop.Key.Substring(0,3)=="min") {
-                minValues.Add(prop.Key.Substring(3));
+        if (prop.Length>3 && 
+            prop.Substring(0,3)=="min") {
+                minValues.Add(prop.Substring(3));
             }
-            dict[prop.Key]=0;
+            dict[prop]=((int)dict[prop])+1;
         }
     }
 
