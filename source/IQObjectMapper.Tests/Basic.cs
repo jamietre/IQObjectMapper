@@ -110,7 +110,7 @@ namespace IQObjectMapper.Tests
 
             // another way
 
-            var parsed = ObjectMapper.Map(obj,(del,value) => {
+            var parsed = ObjectMapper.Map(obj,(value,del) => {
                 if (value !=null && value.GetType().IsClass) {
                     return null;
                 } else {

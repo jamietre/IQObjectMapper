@@ -146,8 +146,16 @@ namespace IQObjectMapper
             }
 
         }
-
-        public static T Map<T>(T source, Func<IDelegateInfo,object,object> mapFunc, IMapOptions options=null) where T: class, new()
+     
+        /// <summary>
+        /// Map an instance of T to another instance, translating values wit the function passed
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="mapFunc"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public static T Map<T>(T source, Func<object, IDelegateInfo,object> mapFunc, IMapOptions options = null) where T : class, new()
         {
             var opts =MapOptions.From(options);
             IDictionary<string,object> dict = new Dictionary<string,object>(ObjectMapper.MapperCache.GetStringComparer(opts));
@@ -155,7 +163,7 @@ namespace IQObjectMapper
 
             foreach (var del in delegates)
             {
-                dict[del.Name] = mapFunc(del, del.GetValue(source));
+                dict[del.Name] = mapFunc(del.GetValue(source), del);
             }
             return ObjectMapper.ToNew<T>(dict);
         }
