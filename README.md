@@ -124,7 +124,7 @@ You can update an existing instance.
 
 It's easy to use the internal structures to provide easy reflections access and take advantage of IQObjectMappers caching and data translation capabilities. The IClassInfo object provides a useful subset of information that the .NET reflection objects provide, and provides consistent access to fields, properties, and anonymous types.
 
-Each class is mapped the first time it's accessed and the metadata cached in memory. Fast, typed access methods are used for fields and properties. Performance is about 2x the cost of a direct property access, which should be plenty fast for just about anything. When using wrapper data structures this may be worse (e.g. the Dictionary wrapper is about 4x). Bear in mind that even a 4x as long as a direct access, you can do hundreds of millions of reads/writes in a second. This should not in any way impact an application's performance and is far better than using conventional methods of reflection.
+Each class is mapped the first time it's accessed and the metadata cached in memory. Fast, typed access methods are used for fields and properties. Performance is about 2x the cost of a direct property access, which should be plenty fast for just about anything. When using wrapper data structures this may be worse (e.g. the Dictionary wrapper is about 14x). Bear in mind that even at 14x as long as a direct property access, we're still talking about several thousand operations per *millisecond* or several million per second on typical hardware. This should not in any way impact an application's performance. But if performance close to native is needed, you can still access the delegates directly with little difficulty:
 
 
     IClassInfo info = GetClassInfo(newClass);
