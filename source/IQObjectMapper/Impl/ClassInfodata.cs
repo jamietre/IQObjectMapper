@@ -24,26 +24,29 @@ namespace IQObjectMapper.Impl
         {
             Type = type;
             Options = ReflectionOptions.From(options);
+            InnerDict = new Dictionary<string, IDelegateInfo>(Options.CaseSensitive ?
+                        StringComparer.Ordinal :
+                        StringComparer.OrdinalIgnoreCase);
         }
 
         #endregion
 
         #region private properties
 
-        private IDictionary<string, IDelegateInfo> _InnerDict;
-        protected IDictionary<string, IDelegateInfo> InnerDict
-        {
-            get
-            {
-                if (_InnerDict == null)
-                {
-                    _InnerDict = new Dictionary<string, IDelegateInfo>(Options.CaseSensitive ?
-                        StringComparer.Ordinal :
-                        StringComparer.OrdinalIgnoreCase);
-                }
-                return _InnerDict;
-            }
-        }
+        private IDictionary<string, IDelegateInfo> InnerDict;
+        //protected IDictionary<string, IDelegateInfo> InnerDict
+        //{
+        //    get
+        //    {
+        //        if (_InnerDict == null)
+        //        {
+        //            _InnerDict = new Dictionary<string, IDelegateInfo>(Options.CaseSensitive ?
+        //                StringComparer.Ordinal :
+        //                StringComparer.OrdinalIgnoreCase);
+        //        }
+        //        return _InnerDict;
+        //    }
+        //}
 
         #endregion
 

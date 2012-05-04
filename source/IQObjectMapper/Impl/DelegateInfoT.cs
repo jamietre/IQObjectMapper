@@ -6,7 +6,7 @@ using System.Text;
 namespace IQObjectMapper.Impl
 {
 
-    public class DelegateInfo<T, U> : DelegateInfo, IDelegateInfo<T, U> where T: class
+    public class DelegateInfo<T, U> : DelegateInfo where T: class
     {
         #region constructors
 
@@ -46,7 +46,13 @@ namespace IQObjectMapper.Impl
                 return typeof(U);
             }
         }
-
+        public override Type OwnerType
+        {
+            get
+            {
+                return typeof(T);
+            }
+        }
         public override Delegate GetDelegate
         {
             get
@@ -135,15 +141,26 @@ namespace IQObjectMapper.Impl
         
         // Strongly typed version of the Get/Set functions.
 
-        public U GetValue(T source)
-        {
-            return GetDelegateFunc(source);
-        }
-        public void SetValue(T source, U value)
-        {
-            SetDelegateFunc(source, value);
-        }
+        //public U GetValue(T source)
+        //{
+        //    return GetDelegateFunc(source);
+        //}
+        //public void SetValue(T source, U value)
+        //{
+        //    SetDelegateFunc(source, value);
+        //}
 
+        //public Func<U> GetFastGetDelegate(T source)
+        //{
+        //    Type outputType = typeof(Func<>).MakeGenericType(new Type[] { Type });
+        //    return (Func<U>)Delegate.CreateDelegate(outputType, source, Name, false);
+        //}
+
+        //public Action<U> GetFastSetDelegate(T source)
+        //{
+        //    Type outputType = typeof(Action<>).MakeGenericType(new Type[] { Type });
+        //    return (Action<U>)Delegate.CreateDelegate(outputType, source, Name, false);
+        //}
         #endregion
 
         #region private members
@@ -151,13 +168,13 @@ namespace IQObjectMapper.Impl
         // These overrides ensure that when a nontyped cast is called for a typed instance, the typed functions
         // are used
 
-        protected override object GetValueImpl(object source)
+        public override object GetValue(object source)
         {
             return GetDelegateFunc((T)source);
 
         }
 
-        protected override void SetValueImpl(object source, object value)
+        public override void SetValue(object source, object value)
         {
             SetDelegateFunc((T)source, (U)value);
         }

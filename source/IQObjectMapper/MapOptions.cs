@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Dynamic;
 using System.Collections;
+using IQObjectMapper;
 
 namespace IQObjectMapper
 {
@@ -16,6 +17,7 @@ namespace IQObjectMapper
     /// </summary>
     public class MapOptions: IGlobalOptions, IReflectionOptions,IDictionaryOptions, IMapOptions
     {
+
         #region constructors
 
         /// <summary>
@@ -29,7 +31,7 @@ namespace IQObjectMapper
             IncludePrivate = false;
             DeclaredOnly = false;
             CaseSensitive = false;
-            DynamicObjectType = typeof(ExpandoObject);
+            DynamicObjectType = typeof(IQDynamicObject);
             FailOnMismatchedTypes = true;
             CanAlterProperties = true;
             CanAccessMissingProperties = true;
@@ -129,6 +131,12 @@ namespace IQObjectMapper
 
         #region public properties
 
+        public Action<string> OnChange;
+        protected void Change(string prop) {
+            if (OnChange!=null) {
+                OnChange(prop);
+            }
+        }
         public bool IncludeFields
         {
             get;
@@ -172,10 +180,19 @@ namespace IQObjectMapper
             set;
         }
 
+        private bool _ParseValues;
         public bool ParseValues
         {
-            get;
-            set;
+            get
+            {
+                return _ParseValues;
+            }
+            set
+            {
+                _ParseValues =value;
+                Change("ParseValues");
+
+            }
         }
 
         public bool UpdateSource

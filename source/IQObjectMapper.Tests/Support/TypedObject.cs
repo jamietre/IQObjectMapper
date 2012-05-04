@@ -14,7 +14,8 @@ namespace IQObjectMapper.Tests
         public IList<string> StringList { get; set; }
         public byte[] ByteArray { get; set; }
         public IEnumerable<object> ObjectEnumerable { get; set; }
-        public dynamic ObjectProp { get; set; }
+        public dynamic DynamicObjectProp { get; set; }
+        public object ObjectProp { get; set; }
         public DateTime DateTimeProp { get; set; }
         public virtual bool BoolProp { get; set; }
 

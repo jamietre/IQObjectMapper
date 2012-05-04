@@ -16,11 +16,12 @@ namespace IQObjectMapper.Adapters
     /// </summary>
     public class DataReaderDictionary : IEnumerable<IDictionary<string, object>>, IDisposable
     {
-        public DataReaderDictionary(IDataReader reader)
+        public DataReaderDictionary(IDataReader reader, IMapOptions options=null)
         {
             InnerDataReader = reader;
-
+            Options = MapOptions.From(options);
         }
+        public MapOptions Options { get; set; }
         IDataReader InnerDataReader;
 
         IEnumerable<IDictionary<string, object>> DictionaryEnumerable()
@@ -29,7 +30,10 @@ namespace IQObjectMapper.Adapters
 
             foreach (IEnumerable<KeyValuePair<string, object>> row in adapter)
             {
-                IDictionary<string, object> dict = new Dictionary<string, object>();
+
+                IDictionary<string, object> dict = new Dictionary<string, object>(
+                    Options.CaseSensitive ? StringComparer.CurrentCulture : StringComparer.CurrentCultureIgnoreCase
+                    );
                 foreach (var obj in row)
                 {
                     dict[obj.Key] = obj.Value;
@@ -40,7 +44,8 @@ namespace IQObjectMapper.Adapters
 
         IEnumerator<IDictionary<string, object>> IEnumerable<IDictionary<string, object>>.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return DictionaryEnumerable().GetEnumerator();
+            
         }
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {

@@ -9,6 +9,7 @@ using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
 using IQObjectMapper;
 using IQObjectMapper.Adapters;
+using Microsoft.CSharp.RuntimeBinder;
 
 namespace IQObjectMapper.Tests
 {
@@ -57,15 +58,15 @@ namespace IQObjectMapper.Tests
             var testObj = new TypedObject();
             var dict = new PropertyDictionaryAdapter(testObj);
 
-            Assert.AreEqual(12, dict.Count);
+            Assert.AreEqual(13, dict.Count);
             
             dict["stringfield"] = "New string data";
-            Assert.AreEqual(12, dict.Count);
+            Assert.AreEqual(13, dict.Count);
             Assert.AreEqual("New string data", dict["Stringfield"]);
             Assert.AreEqual("New string data", testObj.StringField);
 
             dict["MyNewProp"] = "added data";
-            Assert.AreEqual(13, dict.Count);
+            Assert.AreEqual(14, dict.Count);
             Assert.AreEqual("added data", dict["mynewprop"]);
 
         }
@@ -120,16 +121,19 @@ namespace IQObjectMapper.Tests
         [TestMethod]
         public void Alter()
         {
+            //var dict2 = new Dictionary<string, object>();
+            //var x = dict2["abc"];
+
             var testObj = new TypedObject();
             var dict = new PropertyDictionaryAdapter(testObj);
             dict.Options.CanAlterProperties = false;
 
-            Assert.Throws<Exception>(() =>
+            Assert.Throws<InvalidOperationException>(() =>
             {
                 dict["newprop"] = "newdata";
             }, "Can't add a prop");
 
-            Assert.Throws<Exception>(() =>
+            Assert.Throws<InvalidOperationException>(() =>
             {
                 dict.Remove("Stringprop");
             }, "Can't add a prop");
@@ -156,8 +160,8 @@ namespace IQObjectMapper.Tests
            
             var intArray = new int[] {1,2,3};
             testObj.IntArray = intArray;
-            Assert.IsTrue(dict.Contains(new KeyValuePair<string,object>("intarray",intArray)));
-            Assert.IsFalse(dict.Contains(new KeyValuePair<string,object>("intarray",new int[] {1,2,3})));
+            Assert.IsTrue(dict.Contains(new KeyValuePair<string,object>("IntArray",intArray)));
+            Assert.IsFalse(dict.Contains(new KeyValuePair<string,object>("IntArray",new int[] {1,2,3})));
         }
     }
 }

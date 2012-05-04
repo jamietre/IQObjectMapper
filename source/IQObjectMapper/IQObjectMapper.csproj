@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters\DataRecordDictionary.cs" />
     <Compile Include="Adapters\DynamicAdapter.cs" />
     <Compile Include="IMapOptions.cs" />
     <Compile Include="IDictionaryOptions.cs" />
@@ -48,6 +49,9 @@
     <Compile Include="IGlobalOptions.cs" />
     <Compile Include="Impl\ClassInfoBuilder.cs" />
     <Compile Include="Impl\ClassInfoData.cs" />
+    <Compile Include="Impl\IMapperCache.cs" />
+    <Compile Include="Impl\ManagedDictionary.cs" />
+    <Compile Include="IQDynamicObject.cs" />
     <Compile Include="Impl\Object2Object.cs" />
     <Compile Include="Impl\ReflectionOptions.cs" />
     <Compile Include="Impl\DelegateInfo.cs" />

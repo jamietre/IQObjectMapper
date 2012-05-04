@@ -21,7 +21,6 @@ namespace IQObjectMapper.Adapters
         {
             InnerReader = reader;
         }
-        public MapOptions Options { get; set; }
 
         IDataReader InnerReader;
         

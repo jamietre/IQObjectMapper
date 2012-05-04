@@ -29,6 +29,7 @@ namespace IQObjectMapper.Tests
         {
             results="";
             options = MapOptions.Default();
+            options.CaseSensitive = true;
 
             Perform("No optimizing",FullReflection, Pure);
 
@@ -36,7 +37,7 @@ namespace IQObjectMapper.Tests
 
             var partialReflect = new Action<int, TypedObject>((i, obj) =>
             {
-                var fi = ci["stringprop"];
+                var fi = ci["StringProp"];
                 string newVal = "val" + i;
                 fi.SetValue(obj, newVal);
                 var value = (string)fi.GetValue(obj);
@@ -44,8 +45,8 @@ namespace IQObjectMapper.Tests
 
             Perform("Local ClassInfo",partialReflect, Pure);
 
-            IDelegateInfo mfi = ci["stringprop"];
-            IDelegateInfo mfiDbl = ci["doubleprop"];
+            IDelegateInfo mfi = ci["StringProp"];
+            IDelegateInfo mfiDbl = ci["DoubleProp"];
 
             var onlyReflect = new Action<int, TypedObject>((i, obj) =>
             {
@@ -73,8 +74,8 @@ namespace IQObjectMapper.Tests
 
             //Perform("Strongly typed local delegates vs. Pure", onlyReflect, Pure);
 
-            mfi = ci["stringfield"];
-            mfiDbl = ci["doublefield"];
+            mfi = ci["StringField"];
+            mfiDbl = ci["DoubleField"];
 
             var onlyReflectFields = new Action<int, TypedObject>((i, obj) =>
             {
@@ -94,25 +95,29 @@ namespace IQObjectMapper.Tests
             {
 
                 string newVal = "val" + i;
-                dict["stringvalue"] = newVal;
-                dict["doublevalue"] = i * 1.5;
-                string value = (string)dict["stringvalue"];
-                double dbl = (double)dict["doublevalue"];
+                dict["StringProp"] = newVal;
+                dict["DoubleProp"] = i * 1.5;
+                string value = (string)dict["StringProp"];
+                double dbl = (double)dict["DoubleProp"];
             });
 
             
             Perform("Dictionary wrapper - properties vs. pure ", dictWrapper, PureFields);
 
             var realDict = new Dictionary<string, object>();
-            
+            foreach (var kvp in dict)
+            {
+                realDict.Add(kvp.Key, kvp.Value);
+            }
+
             var realDictWrapper = new Action<int, TypedObject>((i, obj) =>
             {
 
                 string newVal = "val" + i;
-                realDict["stringvalue"] = newVal;
-                realDict["doublevalue"] = i * 1.5;
-                string value = (string)realDict["stringvalue"];
-                double dbl = (double)realDict["doublevalue"];
+                realDict["StringProp"] = newVal;
+                realDict["DoubleProp"] = i * 1.5;
+                string value = (string)realDict["StringProp"];
+                double dbl = (double)realDict["DoubleProp"];
             });
 
             Perform("Dictionary wrapper - properties vs. real dictionary ", dictWrapper, realDictWrapper);
@@ -123,10 +128,10 @@ namespace IQObjectMapper.Tests
             {
 
                 string newVal = "val" + i;
-                expando.stringvalue = newVal;
-                expando.doublevalue = i * 1.5;
-                string value = expando.stringvalue;
-                double dbl = expando.doublevalue;
+                expando.StringProp = newVal;
+                expando.DoubleProp = i * 1.5;
+                string value = expando.StringProp;
+                double dbl = expando.DoubleProp;
             });
 
             Perform("Expando vs. pure", expandoTest, Pure);
@@ -137,10 +142,10 @@ namespace IQObjectMapper.Tests
             {
 
                 string newVal = "val" + i;
-                dynWrapper.stringvalue = newVal;
-                dynWrapper.doublevalue = i * 1.5;
-                string value = dynWrapper.stringvalue;
-                double dbl = dynWrapper.doublevalue;
+                dynWrapper.StringProp = newVal;
+                dynWrapper.DoubleProp = i * 1.5;
+                string value = dynWrapper.StringProp;
+                double dbl = dynWrapper.DoubleProp;
             });
 
             Perform("DynamicAdapter vs. Pure", dynWapperTest, Pure);
@@ -155,12 +160,12 @@ namespace IQObjectMapper.Tests
             IClassInfo ci;
             ci = ObjectMapper.MapperCache.GetClassInfo(typeof(TypedObject), options);
             string newVal = "val" + i;
-            
-            ci["stringprop"].SetValue(obj, newVal);
-            ci["doubleprop"].SetValue(obj, i * 1.5);
 
-            string value = (string)ci["stringprop"].GetValue(obj);
-            double dbl = (double)ci["doubleprop"].GetValue(obj);
+            ci["StringProp"].SetValue(obj, newVal);
+            ci["DoubleProp"].SetValue(obj, i * 1.5);
+
+            string value = (string)ci["StringProp"].GetValue(obj);
+            double dbl = (double)ci["DoubleProp"].GetValue(obj);
 
         }
         protected void Pure(int i, TypedObject obj)

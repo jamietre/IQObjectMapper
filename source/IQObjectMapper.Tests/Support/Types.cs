@@ -309,7 +309,7 @@ namespace IQObjectMapper.Tests
         public void IsNullableType()
         {
             Assert.IsTrue(Types.IsNullableType<int?>());
-            Assert.IsTrue(Types.IsNullableType<string>());
+            Assert.IsFalse(Types.IsNullableType<string>());
             Assert.IsTrue(Types.IsNullableType<DateTime?>());
             
             Assert.IsFalse(Types.IsNullableType<ExpandoObject>());
@@ -322,6 +322,25 @@ namespace IQObjectMapper.Tests
             Assert.IsFalse(Types.IsNullableType<DateTime>());
             
         }
+
+        [TestMethod()]
+        public void IsNullable()
+        {
+            Assert.IsTrue(Types.IsNullable<int?>());
+            Assert.IsTrue(Types.IsNullable<string>());
+            Assert.IsTrue(Types.IsNullable<DateTime?>());
+
+            Assert.IsTrue(Types.IsNullable<ExpandoObject>());
+            Assert.IsTrue(Types.IsNullable<TypedObject>());
+            Assert.IsTrue(Types.IsNullable<List<int>>());
+            Assert.IsTrue(Types.IsNullable<int[]>());
+
+
+            Assert.IsFalse(Types.IsNullable<int>());
+            Assert.IsFalse(Types.IsNullable<DateTime>());
+
+        }
+
 
         /// <summary>
         ///A test for IsRESTParameterType

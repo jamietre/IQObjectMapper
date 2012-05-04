@@ -11,7 +11,7 @@ namespace IQObjectMapper.Adapters
     /// </summary>
     public class DataRecordAdapter : IEnumerable<KeyValuePair<string, object>>
     {
-        public DataRecordAdapter(IDataRecord record, IMapOptions options=null)
+        public DataRecordAdapter(IDataRecord record)
         {
             Record = record;
         }

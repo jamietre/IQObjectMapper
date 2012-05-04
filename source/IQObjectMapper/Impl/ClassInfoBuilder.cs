@@ -137,11 +137,11 @@ namespace IQObjectMapper.Impl
 
                 DelegateInfo delInfo = null;
 
-                if (member is PropertyInfo && Options.IncludeProperties)
+                if (member is PropertyInfo)
                 {
                     delInfo = CreateForProperty((PropertyInfo)member);
                 }
-                else if (member is FieldInfo && Options.IncludeFields)
+                else if (member is FieldInfo)
                 {
                     delInfo = CreateForField((FieldInfo)member);
                 }
@@ -309,12 +309,11 @@ namespace IQObjectMapper.Impl
 
             foreach (var item in TempDelegateInfo.Values)
             {
-                // Logic: using default (!excludeproperties) handling, anything with a public getter is included automatically.
-                // In addition, only things identified in some way should be included.
 
-                bool include =(!ExcludeByDefault && item.HasPublicGetter)
+                bool include =!ExcludeByDefault
                     || item.Include==true;
                 bool exclude = item.Include == false;
+                
                 if (include && !exclude)
                 {
                     item.Index = index++;

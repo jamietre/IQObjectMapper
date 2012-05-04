@@ -9,7 +9,7 @@ namespace IQObjectMapper
     /// <summary>
     /// Metadata about classes. 
     /// </summary>
-    public interface IClassInfo
+    public interface IClassInfo : IEnumerable<IDelegateInfo>
     {
         IDelegateInfo this[string fieldName] { get; }
         Type Type { get; }

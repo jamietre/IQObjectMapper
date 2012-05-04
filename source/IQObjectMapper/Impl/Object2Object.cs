@@ -127,7 +127,7 @@ namespace IQObjectMapper.Impl
         }
         protected object MapFromNull(object value, Type type)
         {
-            if (Types.IsNullableType(type))
+            if (Types.IsNullable(type))
             {
                 return null;
             }

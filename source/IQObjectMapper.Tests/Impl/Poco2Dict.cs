@@ -15,14 +15,9 @@ namespace IQObjectMapper.Tests
     [TestClass]
     public class Poco2Dict_
     {
-        //protected IDictionary<string, object> Dict()
-        //{
-        //    return new Dictionary<string, object>();
-        //}
-        [TestMethod]
-        public void Simple()
+        protected TypedObject GetTestObject()
         {
-            TypedObject test = new TypedObject
+            return new TypedObject
             {
                 BoolProp = true,
                 DoubleProp = 1.2,
@@ -35,12 +30,16 @@ namespace IQObjectMapper.Tests
                 }
             };
 
+        }
+        [TestMethod]
+        public void Simple()
+        {
+            TypedObject test = GetTestObject();
+
             var mapper = new Poco2Dict();
             mapper.Options.CaseSensitive  =false;
 
             var target = ObjectMapper.ToDictionary(test);
-
-
             
             Assert.AreEqual(true, target["boolprop"]);
             Assert.AreEqual(1.2, target["doubleprop"]);
@@ -53,7 +52,7 @@ namespace IQObjectMapper.Tests
             
             //Assert.AreEqual((double)1.0, target.DoubleProp);
         }
-
+    
         [TestMethod]
         public void Objects()
         {

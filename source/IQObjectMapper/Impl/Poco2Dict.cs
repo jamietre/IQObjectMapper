@@ -55,7 +55,7 @@ namespace IQObjectMapper.Impl
                 throw new Exception("The object can't be null or a value-mappable type to convert to a dictionary.");
             }
 
-            var sourceList = new PropertyKVPAdapter(source);
+            var sourceList = new PropertyKVPAdapter(source,deep,Options);
 
             foreach (var kvp in sourceList)
             {

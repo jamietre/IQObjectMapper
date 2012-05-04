@@ -47,9 +47,8 @@ namespace IQObjectMapper.Adapters
                 var value = del.GetValue(InnerObject);
                 yield return new KeyValuePair<string,object>(
                         del.Name,
-                        Deep && Types.IsCloneableObject(value) ? 
-                            DeepCopy(value) :
-                            value
+                       
+                            DeepCopy(value) 
                             
                 );
             }
@@ -59,24 +58,31 @@ namespace IQObjectMapper.Adapters
 
         protected object DeepCopy(object source)
         {
-            Type type = source.GetType();
-            if (type.IsArray)
-            {
-                return DeepCopyArray((Array)source, type);
-            }
-            else if (type is IEnumerable<KeyValuePair<string, object>>)
-            {
-                return DeepCopyIEKVP((IEnumerable<KeyValuePair<string, object>>)source);
-            }
-            else if (!(source is IEnumerable))
-            {
-                return new PropertyKVPAdapter(source, true, Options);
-            }
-            else
+            if (!Deep || !Types.IsCloneableObject(source))
             {
                 return source;
             }
+            else
+            {
+                Type type = source.GetType();
 
+                if (type.IsArray)
+                {
+                    return DeepCopyArray((Array)source, type);
+                }
+                else if (type is IEnumerable<KeyValuePair<string, object>>)
+                {
+                    return DeepCopyIEKVP((IEnumerable<KeyValuePair<string, object>>)source);
+                }
+                else if (!(source is IEnumerable))
+                {
+                    return new PropertyKVPAdapter(source, true, Options);
+                }
+                else
+                {
+                    return source;
+                }
+            }
         }
         
         protected IEnumerable<KeyValuePair<string,object>> DeepCopyIEKVP(IEnumerable<KeyValuePair<string,object>> source) {

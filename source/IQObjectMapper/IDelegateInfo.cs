@@ -10,17 +10,18 @@ namespace IQObjectMapper
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="U"></typeparam>
-    public interface IDelegateInfo<T, U> : IDelegateInfo where T : class
-    {
-        U GetValue(T source);
-        void SetValue(T source, U value);
-    }
+    //public interface IDelegateInfo<T, U> : IDelegateInfo where T : class
+    //{
+        //U GetValue(T source);
+        //void SetValue(T source, U value);
+    //}
 
     public interface IDelegateInfo
     {
         string Name { get; }
         int Index { get; }
         Type Type { get; }
+        Type OwnerType { get; }
 
         Delegate GetDelegate { get; }
         Delegate SetDelegate { get; }

@@ -95,8 +95,21 @@ namespace IQObjectMapper.Impl
             get { return Data.Count; }
         }
 
+
         #endregion
 
+
+
+
+        public IEnumerator<IDelegateInfo> GetEnumerator()
+        {
+            return Data.Values.GetEnumerator();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }
 

@@ -42,7 +42,7 @@ namespace IQObjectMapper.Tests
         {
 
             var dict = Dict();
-            dict["objectprop"] = new
+            dict["dynamicobjectprop"] = new
             {
                 prop1 = "value1",
                 prop2 = 2.5
@@ -52,9 +52,9 @@ namespace IQObjectMapper.Tests
 
             var target = ObjectMapper.ToNew<TypedObject>(dict);
 
-            Assert.AreEqual(typeof(JsObject), target.ObjectProp.GetType());
-            Assert.AreEqual("value1", target.ObjectProp.prop1);
-            Assert.AreEqual(2.5, target.ObjectProp.prop2);
+            Assert.AreEqual(typeof(JsObject), target.DynamicObjectProp.GetType());
+            Assert.AreEqual("value1", target.DynamicObjectProp.prop1);
+            Assert.AreEqual(2.5, target.DynamicObjectProp.prop2);
             Assert.AreEqual(target.ObjectEnumerable.GetType(), typeof(List<object>));
             Assert.AreEqual("b", (target.ObjectEnumerable.ElementAt(1)));
 
@@ -67,13 +67,13 @@ namespace IQObjectMapper.Tests
             innerDict["subprop3"] = innerInnerDict;
             innerInnerDict["falseval"] = false;
 
-            dict["objectprop"] = innerDict;
+            dict["dynamicobjectprop"] = innerDict;
 
 
             target = ObjectMapper.ToNew<TypedObject>(dict);
-            Assert.AreEqual(typeof(JsObject), target.ObjectProp.GetType());
-            Assert.AreEqual(2, target.ObjectProp.subprop2);
-            Assert.AreEqual(false, target.ObjectProp.subprop3.falseval);
+            Assert.AreEqual(typeof(JsObject), target.DynamicObjectProp.GetType());
+            Assert.AreEqual(2, target.DynamicObjectProp.subprop2);
+            Assert.AreEqual(false, target.DynamicObjectProp.subprop3.falseval);
 
         }
 

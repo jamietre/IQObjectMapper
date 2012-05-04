@@ -146,7 +146,7 @@ namespace IQObjectMapper
             if (value == null || value == System.DBNull.Value || value.ToString()=="")
             {
                 output = type==typeof(string) ? value : null;
-                return IsNullableType(type);
+                return IsNullable(type);
             }
             else if (type.IsAssignableFrom(value.GetType()))
             {
@@ -234,14 +234,26 @@ namespace IQObjectMapper
         }
 
         /// <summary>
+        /// Returns true if the type can accept a null value.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsNullable(Type type)
+        {
+            return type == typeof(string) || type.IsClass || IsNullableType(type);
+        }
+        public static bool IsNullable<T>()
+        {
+            return IsNullable(typeof(T));
+        }
+        /// <summary>
         /// Returns true if the type is a System.Nullable type
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
         public static bool IsNullableType(Type type)
         {
-            return type == typeof(string) ||
-                (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
+            return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
         }
         public static bool IsNullableType<T>()
         {

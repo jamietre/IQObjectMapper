@@ -46,6 +46,7 @@ namespace IQObjectMapper.Impl
         public string Name { get; set; }
         public int Index { get; set; }
         public abstract Type Type {get;}
+        public abstract Type OwnerType { get; }
 
         public virtual Delegate GetDelegate
         {
@@ -79,15 +80,9 @@ namespace IQObjectMapper.Impl
 
         #region public methods
 
-        public virtual object GetValue(object source)
-        {
-            return GetValueImpl(source);
-        }
+        public abstract object GetValue(object source);
        
-        public virtual void SetValue(object source, object value)
-        {
-            SetValueImpl(source,value);
-        }
+        public abstract void SetValue(object source, object value);
 
         // The strongly-typed methods exposed here are just for testing
         // It should automatically use the ones from the typed implementation
@@ -107,14 +102,14 @@ namespace IQObjectMapper.Impl
         // The typed implementation must implement these to refer to the strongly typed functions
         // used to create it
 
-        protected abstract object GetValueImpl(object source);
-        protected abstract void SetValueImpl(object source, object value);
+        //protected abstract object GetValueImpl(object source);
+        //protected abstract void SetValueImpl(object source, object value);
 
         protected void ConfigureTypeSpecificProperties()
         {
             IsValueTarget = Types.IsValueTarget(Type);
             IsObjectTarget = Types.IsObjectTarget(Type);
-            IsNullable = Types.IsNullableType(Type);
+            IsNullable = Types.IsNullable(Type);
         }
 
         #endregion
